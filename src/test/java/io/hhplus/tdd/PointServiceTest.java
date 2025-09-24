@@ -23,8 +23,8 @@ public class PointServiceTest {
 
     @BeforeEach
     void setUp() {
-        userPointTable = new UserPointTable();
         pointHistoryTable = new PointHistoryTable();
+        userPointTable = new UserPointTable();
         pointService = new PointService(userPointTable, pointHistoryTable);
     }
 
