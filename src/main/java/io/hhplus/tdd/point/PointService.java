@@ -18,17 +18,23 @@ public class PointService {
     }
 
     public UserPoint getUserPoint(Long id){
+        // userPointTable에서 id를 가진 UserPoint를 조회
         return userPointTable.selectById(id);
     }
 
     public List<PointHistory> getPointHistory(Long id){
+        // pointHistoryTable에서 id를 가진 모든 PointHistory를 조회
         return pointHistoryTable.selectAllByUserId(id);
     }
 
     public UserPoint chargePoint(Long id, Long amount){
+        // userPointTable에서 id를 가진 UserPoint를 조회
         UserPoint userPoint = userPointTable.selectById(id);
+
+        // 포인트 계산
         long newAmount = userPoint.point() + amount;
 
+        // userPointTable에 업데이트 및 pointHistoryTable에 기록
         UserPoint newUserPoint = userPointTable.insertOrUpdate(id, newAmount);
         pointHistoryTable.insert(id, amount, TransactionType.CHARGE, System.currentTimeMillis());
 
@@ -36,7 +42,10 @@ public class PointService {
     }
 
     public UserPoint usePoint(Long id, Long amount){
+        // userPointTable에서 id를 가진 UserPoint를 조회
         UserPoint userPoint = userPointTable.selectById(id);
+
+        // 
         if(userPoint.point() < amount){
             throw new IllegalArgumentException("Not enough points");
         }
